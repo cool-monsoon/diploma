@@ -1,0 +1,46 @@
+body {
+    background-image: url("../../images/admin/background.jpg");
+    background-color: rgba(0, 0, 0, 0.5);
+    background-blend-mode: multiply;
+    background-size: cover;
+    background-attachment: fixed;
+    counter-reset: num;
+}
+
+.login {
+    width: 480px;
+    margin: 0 auto;
+    position: relative;
+    background-color: rgba(234, 233, 235, 0.95);
+}
+
+.login__wrapper {
+    padding: 35px 104px;
+}
+
+.login__header {
+    position: relative;
+    box-sizing: border-box;
+    padding: 16px 104px;
+    background-color: #63536C;
+    color: #FFFFFF;
+}
+
+.login__title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.login__label {
+    width: 100%;
+    margin-bottom: 0.8rem;
+}
+
+.login__label:last-of-type {
+    margin-bottom: 0;
+}
+
+.login__input {
+    width: 100%;
+}
