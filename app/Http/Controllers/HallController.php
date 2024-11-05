@@ -81,8 +81,8 @@ class HallController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'hall_id' => 'required|exists:halls,id',
-            'standard_seat_price' => 'required|numeric|min:1',
-            'vip_seat_price' => 'required|numeric|min:1',
+            'standard_seat_price' => 'required|numeric|min:0',
+            'vip_seat_price' => 'required|numeric|min:0',
         ]);
 
         if ($validator->fails()) {

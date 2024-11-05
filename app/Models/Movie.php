@@ -16,6 +16,7 @@ class Movie extends Model
         'description',
         'duration',
         'county',
+        'poster',
     ];
 
     protected $hidden = [

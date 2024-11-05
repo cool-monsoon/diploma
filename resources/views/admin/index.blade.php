@@ -57,7 +57,8 @@
                     @foreach ($halls as $hall)
                         <li style="display:flex; align-content: center;">
                             <p data-id="{{ $hall->id }}">{{ $hall->name }} </p>
-                            <form action="{{ route('hall.destroy', $hall->id) }}" method="post" accept-charset="utf-8" style="margin-left: 10px;">
+                            <form action="{{ route('hall.destroy', $hall->id) }}" method="post" accept-charset="utf-8"
+                                style="margin-left: 10px;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
@@ -209,17 +210,44 @@
                                     @if (isset($showsOnDate[$hall->id]) && $showsOnDate[$hall->id]->isNotEmpty())
                                         <h3 class="conf-step__movie-title">{{ $date }}</h3>
                                         <div class="conf-step__seances-timeline">
+
+                                            @php
+                                                $cumulativeWidth = 0;
+                                                $containerWidth = 720;
+                                                $totalMinutesInADay = 1440;
+                                            @endphp
+
                                             @foreach ($showsOnDate[$hall->id] as $show)
                                                 @php
-                                                    // Convert start time to minutes
-                                                    $startTime = explode(':', $show->start_time);
-                                                    $startMinutes = $startTime[0] * 60 + $startTime[1];
-                                                    // Calculate width and left position
-                                                    $width = ($show->movie->duration / 1440) * 100;
-                                                    $left = ($startMinutes / 1440) * 100;
+                                                    $startTimeParts = explode(':', $show->start_time);
+                                                    $startHours = (int) $startTimeParts[0];
+                                                    $startMinutes = (int) $startTimeParts[1];
+                                                    $startTotalMinutes = $startHours * 60 + $startMinutes;
+                                                    $durationMinutes = $show->movie->duration;
+                                                    $endTotalMinutes = $startTotalMinutes + $durationMinutes;
+
+                                                    if ($endTotalMinutes > $totalMinutesInADay) {
+                                                        $width = min(
+                                                            (($totalMinutesInADay - $startTotalMinutes) /
+                                                                $totalMinutesInADay) *
+                                                                $containerWidth,
+                                                            $containerWidth,
+                                                        );
+                                                        $left =
+                                                            ($startTotalMinutes / $totalMinutesInADay) *
+                                                            $containerWidth;
+                                                    } else {
+                                                        $width =
+                                                            ($durationMinutes / $totalMinutesInADay) * $containerWidth;
+                                                        $left =
+                                                            ($startTotalMinutes / $totalMinutesInADay) *
+                                                            $containerWidth;
+                                                    }
+                                                    $left = min($left, $containerWidth - $width);
                                                 @endphp
+
                                                 <div class="conf-step__movie conf-step__seances-movie"
-                                                    style="width: {{ $width }}%; left: {{ $left }}%;">
+                                                    style="width: {{ $width }}px; left: {{ $left }}px;">
                                                     <form action="{{ route('show.destroy', $show->id) }}"
                                                         method="post" accept-charset="utf-8">
                                                         @csrf
