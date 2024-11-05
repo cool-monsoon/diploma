@@ -100,5 +100,10 @@ document.addEventListener('DOMContentLoaded', function () {
         console.warn('Price form not found');
     }
 
+
+
+
 });
+
+
 
